@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Elxyz - Chat Bot</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+<link href="https://telegra.ph/file/86876bb530dc37aa82c5d.jpg" rel="icon">
+<link href="https://telegra.ph/file/86876bb530dc37aa82c5d.jpg" rel="apple-touch-icon">
+
+<link href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Original+Surfer&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link href="https://ferdiz-afk.github.io/Nice/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://ferdiz-afk.github.io/Nice/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+<link href="https://ferdiz-afk.github.io/Nice/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+<link href="https://ferdiz-afk.github.io/Nice/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+<link href="https://ferdiz-afk.github.io/Nice/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+<link href="https://ferdiz-afk.github.io/Nice/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+<link href="https://ferdiz-afk.github.io/Nice/assets/css/style.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/vendors/styles/core.css" />
+<link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/vendors/styles/icon-font.min.css" />
+<link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/src/plugins/cropperjs/dist/cropper.css" />
+<link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/vendors/styles/style.css" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" type="text/css" media="all" />
+<style>
+    .loading-text {
+      animation: shake 2s infinite;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+      20%, 40%, 60%, 80% { transform: translateX(10px); }
+    }
+</style>
+<style>
+    .chat-container {
+        width: 100%;
+        max-width: 100%;
+        height: 90vh;
+        max-height: 90vh;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    .chat-body {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+    }
+    .user-message, .chatbot-message {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 20px;
+    }
+    .user-message {
+        background-color: #007bff;
+        color: white;
+        align-self: flex-end;
+    }
+    .chatbot-message {
+        background-color: #e9ecef;
+        align-self: flex-start;
+    }
+    .chat-footer {
+        display: flex;
+        padding: 10px;
+        border-top: 1px solid #dee2e6;
+    }
+    .chat-footer input {
+        flex: 1;
+        border: none;
+        padding: 10px;
+        border-radius: 20px;
+        margin-right: 10px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .chat-footer button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+    .chat-footer button:hover {
+        background-color: #0056b3;
+    }
+    .typing-indicator {
+        font-style: italic;
+        color: #6c757d;
+    }
+</style>
+</head>
+<body>
+
+<header id="header" class="header fixed-top d-flex align-items-center" style="width:100%">
+<div class="d-flex align-items-center justify-content-between">
+<div class="toggles">
+<i id="toggle-icon" class="bi bi-list toggle-sidebar-btn"></i>
+</div>
+</div>
+<div class="search-bar">
+<form class="search-form d-flex align-items-center" method="POST" action="/search">
+<input type="text" name="query" placeholder="Search" title="Enter search keyword">
+<button type="submit" title="Search">
+<i class="bi bi-search"></i>
+</button>
+</form>
+</div>
+<nav class="header-nav ms-auto">
+<ul class="d-flex align-items-center">
+<li class="nav-item d-block d-lg-none">
+<a class="nav-link nav-icon search-bar-toggle" style="margin-right: -15px;">
+<i class="fa fa-search faa-ring animated faa-slow"></i>
+</a>
+</li>
+
+<li class="nav-item dropdown">
+<a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" style="margin-right: -15px;">
+<i class="bi bi-chat-left-text"></i>
+</a>
+<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages pe-3 alight-center">
+<li class="dropdown-header">
+use this chat box properly and correctly.
+<a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Cha-box</span></a>
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>
+<li class="message-item">
+<a href="#">
+<iframe src="https://www5.cbox.ws/box/?boxid=951148&boxtag=Elxyz" width="100%" height="550" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>
+</a>
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>
+<li class="dropdown-footer">
+<a href="#"></a>
+</li>
+</ul>
+</li>
+<li class="nav-item dropdown pe-3">
+<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+<div class="position-relative">
+<img class="rounded-circle" src="<%= user.profile %>" alt="user.jpg">
+<div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+</div>
+</a>
+<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+<li>
+<hr class="dropdown-divider">
+</li>
+<li>
+<a class="dropdown-item d-flex align-items-center" href="/profile">
+<i class="bi bi-person"></i>
+<span>Profile</span>
+</a>
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>
+<li>
+<a class="dropdown-item d-flex align-items-center" href="/logout">
+<i class="bi bi-chevron-left"></i>
+<span>Log Out</span>
+</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</header>
+<aside id="sidebar" class="sidebar" style="z-index:122;">
+<ul class="sidebar-nav" id="sidebar-nav">
+<div class="d-flex align-items-center ms-4 mb-4">
+<div class="position-relative">
+  <img class="rounded-circle" src="<%= user.profile %>" alt="" style="width: 40px; height: 40px;">
+</div>
+  <div class="ms-3">
+    <h6 class="mb-0"><%= user.username %></h6>
+    <span><%= user.premium ? "Premium User" : "Free User" %></span>
+  </div>
+</div>
+</div>
+<div class="mt-8">
+<div class="mb-4 relative lg:hidden false">
+</div>
+<li class="nav-item">
+<a class="nav-link collapsed" href="/dashboard">
+<i class="bi bi-house"></i>
+<span>Dashboard</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link collapsed" href="/pricing">
+<i class="bi bi-credit-card"></i>
+<span>Pricing</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link collapsed" href="/changelog">
+<i class="bi bi-repeat"></i>
+<span>Changelog</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link collapsed" href="/upload">
+<i class="bi bi-upload"></i>
+<span>File Uploader</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link collapsed" href="/attack">
+<i class="fa fa-user-secret"></i>
+<span>Attacker Website</span>
+</a>
+</li>
+<li class="nav-heading">CONTACT</li>
+<li class="nav-item">
+<a class="nav-link collapsed" href="https://wa.me/6289604363344">
+<i class="bi bi-whatsapp"></i>
+<span>WhatsApp</span>
+</a>
+</li>
+<li class="nav-item">
+<a class="nav-link collapsed" href="https://t.me/kiicode">
+<i class="bi bi-telegram"></i>
+<span>Telegram</span>
+</a>
+</li>
+</ul>
+</aside>
+<main id="main" class="main">
+<div class="content-wrapper text-center col-xxl-4 col-xl-12">
+</div>
+<!--- Dashboard-->
+
+    <div class="chat-container">
+        <div id="chat-body" class="chat-body">
+            <div class="chatbot-message">Hi, I'm a Chat Bot. What can I help you with today?</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="user-input" placeholder="Type your message here...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+</main>
+
+<footer id="footer" class="footer">
+<div class="copyright">
+&copy; Copyright <strong><span>2023-2024</span></strong> KiiCode Projects
+</div>
+</footer>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+<i class="bi bi-arrow-up-short"></i>
+</a>
+
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/echarts/echarts.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/quill/quill.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/php-email-form/validate.js"></script>
+<script>
+    document.getElementById('send-button').addEventListener('click', function() {
+        const userInput = document.getElementById('user-input').value;
+        const chatBody = document.getElementById('chat-body');
+
+        if (userInput.trim() === '') return;
+
+        // Display user message
+        const userMessageElement = document.createElement('div');
+        userMessageElement.classList.add('user-message');
+        userMessageElement.textContent = userInput;
+        chatBody.appendChild(userMessageElement);
+
+        // Clear input field
+        document.getElementById('user-input').value = '';
+
+        // Display typing indicator
+        const typingIndicator = document.createElement('div');
+        typingIndicator.classList.add('chatbot-message', 'typing-indicator');
+        typingIndicator.textContent = 'Alicia is typing...';
+        chatBody.appendChild(typingIndicator);
+
+        // Scroll to the bottom of the chat
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        // Send GET request to the API using fetch
+        fetch('/chat?text=' + encodeURIComponent(userInput))
+        .then(response => response.json())
+        .then(data => {
+            // Remove typing indicator
+            chatBody.removeChild(typingIndicator);
+
+            // Display chatbot message
+            const botMessageElement = document.createElement('div');
+            botMessageElement.classList.add('chatbot-message');
+            botMessageElement.textContent = data.response; // Adjust this if the API response structure is different
+            chatBody.appendChild(botMessageElement);
+
+            // Scroll to the bottom of the chat
+            chatBody.scrollTop = chatBody.scrollHeight;
+        })
+        .catch(error => {
+            // Remove typing indicator
+            chatBody.removeChild(typingIndicator);
+
+            // Display error message
+            const errorMessageElement = document.createElement('div');
+            errorMessageElement.classList.add('chatbot-message');
+            errorMessageElement.textContent = 'Sorry, there was an error. Please try again.';
+            chatBody.appendChild(errorMessageElement);
+
+            // Scroll to the bottom of the chat
+            chatBody.scrollTop = chatBody.scrollHeight;
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KiiCode | Profile</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+    .profile-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+    .nav-tabs {
+      margin-bottom: 20px;
+    }
+    .api-key-container {
+      display: flex;
+      align-items: center;
+    }
+    .api-key-text {
+      margin: 0;
+      letter-spacing: 1px;
+    }
+    .toggle-api-key {
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 1.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container profile-container">
+    <img id="profile-img" class="profile-img" src="<%= user.profile %>" alt="Profile Picture">
+    <ul class="nav nav-tabs" id="profileTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="account-info-tab" data-toggle="tab" href="#account-info" role="tab" aria-controls="account-info" aria-selected="true">Account Info</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="profileTabContent">
+      <div class="tab-pane fade show active" id="account-info" role="tabpanel" aria-labelledby="account-info-tab">
+        <h3>Account Info</h3>
+        <p><strong>Username:</strong> <%= user.username %></p>
+        <p><strong>Email:</strong> <%= user.email %></p>
+        <div class="api-key-container">
+          <p class="api-key-text"><strong>API Key:</strong> <span id="api-key"><%= '*'.repeat(user.apiKey.length) %></span></p>
+          <i class="far fa-eye toggle-api-key" id="toggle-api-key-icon" onclick="toggleApiKey()"></i>
+        </div>
+        <p><strong>Role User:</strong> <%= user.premium ? 'Premium User' : 'Free User' %></p>
+        <% if (user.premium) { %>
+          <p><strong>Premium Expires:</strong> <%= new Date(user.premiumTime * 1000).toLocaleString() %></p>
+        <% } %>
+        <p><strong>IP Address:</strong> <%= user.ipAddress %></p>
+      </div>
+      <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+        <h3>Settings</h3>
+        <h4>Change IP Address</h4>
+        <form id="change-ip-form">
+          <div class="form-group">
+            <label for="newIP">New IP Address:</label>
+            <input type="text" class="form-control" id="newIP" name="newIP" placeholder="Enter new IP address" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Change IP</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+  <script>
+    let apiKeyVisible = false;
+
+    function toggleApiKey() {
+      const apiKeyElement = document.getElementById('api-key');
+      const toggleIcon = document.getElementById('toggle-api-key-icon');
+
+      if (apiKeyVisible) {
+        apiKeyElement.textContent = '<%= '*'.repeat(user.apiKey.length) %>';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+      } else {
+        apiKeyElement.textContent = '<%= user.apiKey %>';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+      }
+      apiKeyVisible = !apiKeyVisible;
+    }
+
+    document.getElementById('change-ip-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(this);
+      const apiKey = '<%= user.apiKey %>'; // Pastikan ini tersedia di halaman Anda
+
+      fetch('/change-ip', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ apikey: apiKey, newIP: formData.get('newIP') })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.message) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: data.message
+          });
+          // Refresh halaman setelah berhasil mengubah IP
+          location.reload();
+        } else if (data.error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: data.error
+          });
+        }
+      })
+      .catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An error occurred while updating the IP address'
+        });
+        console.error('Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>

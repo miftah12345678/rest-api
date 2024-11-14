@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <style>
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-form {
+      width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-floating {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .form-floating input {
+      width: 100%;
+      padding: 0.5rem;
+      border: none;
+      border-bottom: 1px solid #ced4da;
+      border-radius: 0;
+      outline: none;
+    }
+
+    .floating-label {
+      position: absolute;
+      top: 0.5rem;
+      left: 0.5rem;
+      pointer-events: none;
+      transition: top 0.3s, font-size 0.3s;
+    }
+
+    .form-floating input:focus + .floating-label,
+    .form-floating input:not(:placeholder-shown) + .floating-label {
+      top: -0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .login-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .social-login {
+      text-align: center;
+    }
+
+    .social-btn {
+      margin-top: 1rem;
+    }
+
+    .social-btn img {
+      width: 30px;
+      margin-right: 0.5rem;
+    }
+
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="login-container">
+      <div class="login-form">
+        <h2 class="text-center mb-4">Login</h2>
+        <div class="social-login mt-4">
+        <form id="apikey-login-form" method="post" action="/auth/apikey">
+      <div class="form-group">
+        <label for="apikey">Please select a login method</label>
+        <input type="text" placeholder="Enter your Apikey" class="form-control" id="apikey" name="apikey" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Login with API Key</button>
+    </form>
+          <div class="row">
+            <div class="col">
+              <div class="social-btn">
+                <a href="/auth/google" class="btn btn-light"><img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google"> Google</a>
+              </div>
+            </div>
+            <div class="col">
+              <div class="social-btn">
+                <a href="/auth/github" class="btn btn-light"><img src="https://img.icons8.com/ios-filled/50/000000/github.png" alt="GitHub"> GitHub</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script>
+    $(document).ready(function() {
+      // Add floating animation to social buttons
+      $(".social-btn", "form-group").addClass("floating");
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      // Add floating animation to social buttons
+      $(".login-form").addClass("floating");
+    });
+  </script>
+</body>
+</html>

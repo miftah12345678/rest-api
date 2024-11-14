@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Elxyz - Uploader</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link href="https://telegra.ph/file/86876bb530dc37aa82c5d.jpg" rel="icon">
+    <link href="https://telegra.ph/file/86876bb530dc37aa82c5d.jpg" rel="apple-touch-icon">
+
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Original+Surfer&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <link href="https://ferdiz-afk.github.io/Nice/assets/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/vendors/styles/core.css" />
+    <link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/vendors/styles/icon-font.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/src/plugins/cropperjs/dist/cropper.css" />
+    <link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/vendors/styles/style.css" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" type="text/css" media="all" />
+    <style>
+        .loading-text {
+          animation: shake 2s infinite;
+        }
+
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+          20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }/* Tambahan gaya CSS untuk memperlebar kolom tabel */
+        .table th, .table td {
+          white-space: nowrap;
+        }
+
+        .table th:nth-child(2), .table td:nth-child(2) {
+          width: 200px; /* Lebar kolom untuk nama */
+        }
+
+    </style>
+    <style>
+      .container {
+      text-align: center;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    .container h1 {
+      margin-bottom: 20px;
+    }
+    .container form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .file-info {
+      text-align: left;
+      margin-bottom: 20px;
+      width: 100%;
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    .file-info p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    .custom-file-upload {
+      display: inline-block;
+      padding: 10px 20px;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      transition: background-color 0.3s ease;
+    }
+    .container input[type="file"] {
+      display: none;
+    }
+    .container button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .container button:hover,
+    .custom-file-upload:hover {
+      background-color: #0056b3;
+    }
+    .back-icon {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #007BFF;
+      transition: color 0.3s ease;
+    }
+    .back-icon:hover {
+      color: #0056b3;
+    }
+    .back-icon i {
+      font-size: 24px;
+      margin-right: 8px;
+    }
+    .loading-container {
+      display: none;
+      margin-top: 20px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .loading-container img {
+      width: 50px;
+      margin-bottom: 10px;
+    }
+    .loading-container h1 {
+      font-size: 1rem;
+      color: #000;
+      margin-bottom: 10px;
+      animation: fadeIn 1.5s infinite alternate;
+    }
+    .loading-brand span {
+      color: #007bff;
+    }
+    @keyframes fadeIn {
+      0% {
+        opacity: 0.2;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+    .loading-bar-container {
+      width: 80%;
+      height: 5px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .loading-bar {
+      width: 0;
+      height: 100%;
+      background: #007bff;
+      border-radius: 5px;
+      transition: width 5s linear;
+    }
+    .file-url-container {
+      display: none;
+      margin-top: 20px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: left;
+      width: 100%;
+    }
+    .file-url-container input {
+      width: calc(100% - 60px);
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+    .file-url-container button {
+      padding: 10px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .notification {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      animation: slideIn 0.5s ease-out, slideOut 0.5s 3s ease-in forwards;
+    }
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+      }
+      to {
+        transform: translateX(0);
+      }
+    }
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(100%);
+      }
+    }
+    .notification i {
+      margin-right: 10px;
+    }
+    </style>
+</head>
+<body>
+
+<header id="header" class="header fixed-top d-flex align-items-center" style="width:100%">
+<div class="d-flex align-items-center justify-content-between">
+<div class="toggles">
+<i id="toggle-icon" class="bi bi-list toggle-sidebar-btn"></i>
+</div>
+</div>
+<div class="search-bar">
+<form class="search-form d-flex align-items-center" method="POST" action="/search">
+<input type="text" name="query" placeholder="Search" title="Enter search keyword">
+<button type="submit" title="Search">
+<i class="bi bi-search"></i>
+</button>
+</form>
+</div>
+<nav class="header-nav ms-auto">
+<ul class="d-flex align-items-center">
+<li class="nav-item d-block d-lg-none">
+<a class="nav-link nav-icon search-bar-toggle" style="margin-right: -15px;">
+<i class="fa fa-search faa-ring animated faa-slow"></i>
+</a>
+</li>
+
+<li class="nav-item dropdown">
+<a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" style="margin-right: -15px;">
+<i class="bi bi-chat-left-text"></i>
+</a>
+<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages pe-3 alight-center">
+<li class="dropdown-header">
+use this chat box properly and correctly.
+<a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Cha-box</span></a>
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>
+<li class="message-item">
+<a href="#">
+<iframe src="https://www5.cbox.ws/box/?boxid=951148&boxtag=Elxyz" width="100%" height="550" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>
+</a>
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>
+<li class="dropdown-footer">
+<a href="#"></a>
+</li>
+</ul>
+</li>
+<li class="nav-item dropdown pe-3">
+<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+<div class="position-relative">
+<img class="rounded-circle" src="<%= user.profile %>" alt="user.jpg">
+<div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+</div>
+</a>
+<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+<li>
+<hr class="dropdown-divider">
+</li>
+<li>
+<a class="dropdown-item d-flex align-items-center" href="/profile">
+<i class="bi bi-person"></i>
+<span>Profile</span>
+</a>
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>
+<li>
+<a class="dropdown-item d-flex align-items-center" href="/logout">
+<i class="bi bi-chevron-left"></i>
+<span>Log Out</span>
+</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</header>
+    <%- include('./layouts/navbar.ejs') %>
+<!--- Dashboard-->
+<main id="main" class="main">
+<div class="content-wrapper text-center col-xxl-4 col-xl-12">
+</div>
+<div class="container">
+    <h1>Upload File</h1>
+    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+      <div class="file-info" id="fileInfo"></div>
+      <label for="file" class="custom-file-upload">Pilih file</label>
+      <input type="file" name="file" id="file" accept=".jpg,.jpeg,.png,.mp3,.mp4" required>
+      <button type="submit">Upload</button>
+      <div class="loading-container" id="loading">
+        <img src="https://camo.githubusercontent.com/fbfa09c159814f6e1a90cc6fe53b52053ec0a558abcceb8df8a1d9a2e18de494/68747470733a2f2f766965772e6d6f657a782e63632f696d616765732f323032312f30322f32352f37323137323934613863623939326433376563656562386635613031643130302e676966" alt="Running Rabbit">
+        <h1 class="loading-brand">Please<span>Wait</span></h1>
+        <div class="loading-bar-container">
+          <div class="loading-bar"></div>
+        </div>
+      </div>
+      <div class="file-url-container" id="fileUrlContainer">
+        <input type="text" id="fileUrl" readonly>
+        <button type="button" onclick="copyToClipboard()">Copy</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="notification" id="notification">
+    <i class="fas fa-check-circle"></i>
+    Link copied to clipboard!
+  </div>
+
+</main>
+
+<footer id="footer" class="footer">
+<div class="copyright">
+&copy; Copyright <strong><span>2023-2024</span></strong> KiiCode Projects
+</div>
+</footer>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+<i class="bi bi-arrow-up-short"></i>
+</a>
+
+<script>
+    const fileInput = document.getElementById('file');
+    const fileInfo = document.getElementById('fileInfo');
+    const loadingContainer = document.getElementById('loading');
+    const fileUrlContainer = document.getElementById('fileUrlContainer');
+    const fileUrlInput = document.getElementById('fileUrl');
+    const notification = document.getElementById('notification');
+
+    fileInput.addEventListener('change', function() {
+      const file = fileInput.files[0];
+      if (file) {
+        const fileSize = (file.size / 1024 / 1024).toFixed(2); // Convert to MB
+        const fileType = file.type.split('/').pop().toUpperCase();
+        fileInfo.innerHTML = `<p><strong>Nama File:</strong> ${file.name}</p>
+                              <p><strong>Ukuran File:</strong> ${fileSize} MB</p>
+                              <p><strong>Tipe File:</strong> ${fileType}</p>`;
+      } else {
+        fileInfo.innerHTML = '';
+      }
+    });
+
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', form.action, true);
+
+      xhr.upload.addEventListener('progress', function(e) {
+        if (e.lengthComputable) {
+          const percentComplete = (e.loaded / e.total) * 100;
+          document.querySelector('.loading-bar').style.width = `${percentComplete}%`;
+        }
+      });
+
+      xhr.addEventListener('load', function() {
+        loadingContainer.style.display = 'none';
+        document.querySelector('.loading-bar').style.width = '0';
+
+        const response = JSON.parse(xhr.responseText);
+        const fileUrl = response.fileUrl; // Adjust this according to your server response
+        fileUrlInput.value = fileUrl;
+        fileUrlContainer.style.display = 'flex';
+      });
+
+      xhr.addEventListener('error', function() {
+        alert('There was an error uploading your file.');
+        loadingContainer.style.display = 'none';
+        document.querySelector('.loading-bar').style.width = '0';
+      });
+
+      xhr.addEventListener('abort', function() {
+        alert('The upload has been canceled by the user or the browser dropped the connection.');
+        loadingContainer.style.display = 'none';
+        document.querySelector('.loading-bar').style.width = '0';
+      });
+
+      loadingContainer.style.display = 'flex';
+      xhr.send(formData);
+    });
+
+    function copyToClipboard() {
+      fileUrlInput.select();
+      document.execCommand('copy');
+      showNotification();
+    }
+
+    function showNotification() {
+      notification.style.display = 'flex';
+      setTimeout(function() {
+        notification.style.display = 'none';
+      }, 3500); // Matches the animation duration
+    }
+  </script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/echarts/echarts.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/quill/quill.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/php-email-form/validate.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/js/main.js"></script>
+
+</body>
+</html>

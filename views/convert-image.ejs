@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konversi Gambar</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* CSS untuk kotak di tengah halaman */
+    .center-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .convert-form {
+      width: 400px; /* Lebar formulir */
+      padding: 20px;
+      background-color: #f8f9fa; /* Warna latar belakang */
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Bayangan */
+    }
+    .converted-image {
+      margin-top: 20px;
+      max-width: 100%;
+    }
+    .custom-file-input {
+      cursor: pointer;
+    }
+    .custom-file-input::-webkit-file-upload-button {
+      visibility: hidden;
+    }
+    .custom-file-input::before {
+      content: 'Pilih File';
+      display: inline-block;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      outline: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .custom-file-input:hover::before {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="center-box">
+    <div class="convert-form">
+      <h2 class="mb-4">Konversi Gambar</h2>
+      <form id="upload-form">
+        <div class="form-group">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="file" name="file" accept="image/*" required>
+            <label class="custom-file-label" for="file">Pilih gambar untuk dikonversi...</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Konversi</button>
+      </form>
+      <div id="uploaded-image" class="mt-4"></div>
+      <div id="converted-image" class="mt-4"></div>
+      <button id="download-btn" class="btn btn-success btn-block mt-4" style="display: none;">Download</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('upload-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const formData = new FormData();
+      const fileField = document.querySelector('input[type="file"]');
+      formData.append('file', fileField.files[0]);
+
+      const response = await fetch('/convert-image', {
+        method: 'POST',
+        body: formData
+      });
+      const result = await response.json();
+      if (result.error) {
+        alert(result.error);
+      } else {
+        const uploadedImageDiv = document.getElementById('uploaded-image');
+        uploadedImageDiv.innerHTML = `<h4>Gambar Diunggah:</h4><img src="${result.fileUrl}" class="converted-image">`;
+
+        const convertedImageDiv = document.getElementById('converted-image');
+        convertedImageDiv.innerHTML = `<h4>Gambar Dikonversi:</h4><img src="${result.convertedImageUrl}" class="converted-image">`;
+
+        // Tampilkan tombol Download
+        const downloadBtn = document.getElementById('download-btn');
+        downloadBtn.style.display = 'block';
+        downloadBtn.addEventListener('click', function() {
+          window.location.href = result.convertedImageUrl; // Mengunduh gambar yang dikonversi
+        });
+      }
+    });
+
+    // Ubah label pada input file saat file dipilih
+    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+      var fileName = document.getElementById('file').files[0].name;
+      var nextSibling = e.target.nextElementSibling;
+      nextSibling.innerText = fileName;
+    });
+  </script>
+</body>
+</html>
