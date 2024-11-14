@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Elxyz - Feature AI</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <link href="https://telegra.ph/file/86876bb530dc37aa82c5d.jpg" rel="icon">
+    <link href="https://telegra.ph/file/86876bb530dc37aa82c5d.jpg" rel="apple-touch-icon">
+
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Original+Surfer&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="https://ferdiz-afk.github.io/Nice/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <link href="https://ferdiz-afk.github.io/Nice/assets/css/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/vendors/styles/core.css" />
+    <link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/vendors/styles/icon-font.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/src/plugins/cropperjs/dist/cropper.css" />
+    <link rel="stylesheet" type="text/css" href="https://dropways.github.io/deskapp/vendors/styles/style.css" />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css" type="text/css" media="all" />
+    <style>
+        .loading-text {
+          animation: shake 2s infinite;
+        }
+
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+          20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+
+        /* Tambahan gaya CSS untuk memperlebar kolom tabel */
+        .table th, .table td {
+          white-space: nowrap;
+        }
+
+        .table th:nth-child(2), .table td:nth-child(2) {
+          width: 200px; /* Lebar kolom untuk nama */
+        }
+
+        @media (max-width: 768px) {
+          .table-responsive {
+            overflow-x: auto;
+          }
+        }
+    </style>
+</head>
+<body>
+
+<header id="header" class="header fixed-top d-flex align-items-center" style="width:100%">
+<div class="d-flex align-items-center justify-content-between">
+<div class="toggles">
+<i id="toggle-icon" class="bi bi-list toggle-sidebar-btn"></i>
+</div>
+</div>
+<div class="search-bar">
+<form class="search-form d-flex align-items-center" method="POST" action="/search">
+<input type="text" name="query" placeholder="Search" title="Enter search keyword">
+<button type="submit" title="Search">
+<i class="bi bi-search"></i>
+</button>
+</form>
+</div>
+<nav class="header-nav ms-auto">
+<ul class="d-flex align-items-center">
+<li class="nav-item d-block d-lg-none">
+<a class="nav-link nav-icon search-bar-toggle" style="margin-right: -15px;">
+<i class="fa fa-search faa-ring animated faa-slow"></i>
+</a>
+</li>
+
+<li class="nav-item dropdown">
+<a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown" style="margin-right: -15px;">
+<i class="bi bi-chat-left-text"></i>
+</a>
+<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages pe-3 alight-center">
+<li class="dropdown-header">
+use this chat box properly and correctly.
+<a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">Cha-box</span></a>
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>
+<li class="message-item">
+<a href="#">
+<iframe src="https://www5.cbox.ws/box/?boxid=951148&boxtag=Elxyz" width="100%" height="550" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>
+</a>
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>
+<li class="dropdown-footer">
+<a href="#"></a>
+</li>
+</ul>
+</li>
+<li class="nav-item dropdown pe-3">
+<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+<div class="position-relative">
+<img class="rounded-circle" src="<%= user.profile %>" alt="user.jpg">
+<div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+</div>
+</a>
+<ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+<li>
+<hr class="dropdown-divider">
+</li>
+<li>
+<a class="dropdown-item d-flex align-items-center" href="/profile">
+<i class="bi bi-person"></i>
+<span>Profile</span>
+</a>
+</li>
+<li>
+<hr class="dropdown-divider">
+</li>
+<li>
+<a class="dropdown-item d-flex align-items-center" href="/logout">
+<i class="bi bi-chevron-left"></i>
+<span>Log Out</span>
+</a>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</header>
+    <%- include('../layouts/navbar.ejs') %>
+<!--- Dashboard-->
+<main id="main" class="main">
+<div class="content-wrapper text-center col-xxl-4 col-xl-12">
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div>
+                <div class="card-body">
+                    <h6 class="card-title">Artificial Intelligence</h6>
+                    <p class="text-muted mb-3">Artificial Intelligence Feature <code>/ai/endpoint</code></p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Parameter</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                    <th>Try</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Character Ai</td>
+                                    <td>text, apikey</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/character-ai?apikey=<%= user.apiKey %>&character=kamu adalah Alicia, ai yang di buat oleh KiiCode dari website https://api.elxyz.me&text=hai" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Remini Ai</td>
+                                    <td>url, apikey</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/remini?apikey=<%= user.apiKey %>&url=" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Image To Anime</td>
+                                    <td>url, apikey</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/toanime?apikey=<%= user.apiKey %>&url=" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>Bing Create Image</td>
+                                    <td>apikey, prompt</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/bingimg?apikey=<%= user.apiKey %>&prompt=" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>Chat Gpt</td>
+                                    <td>apikey, prompt</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/chatgpt?apikey=<%= user.apiKey %>&prompt=" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>Text To Anime</td>
+                                    <td>apikey, prompt</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/texttoanime?apikey=<%= user.apiKey %>&prompt=" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>Voice Changer</td>
+                                    <td>apikey, url</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/voicechanger?apikey=<%= user.apiKey %>&url=" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>Claude AI</td>
+                                    <td>apikey, query</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/claude?apikey=<%= user.apiKey %>&query=" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td>Simi Simi</td>
+                                    <td>apikey, text</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/simisimi?apikey=<%= user.apiKey %>&text=" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>10</td>
+                                    <td>Alicia AI</td>
+                                    <td>apikey, text</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/alicia?apikey=<%= user.apiKey %>&text=" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>11</td>
+                                    <td>Elxyz AI</td>
+                                    <td>apikey, text</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/elxyz?apikey=<%= user.apiKey %>&text=" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>12</td>
+                                    <td>Text2Img</td>
+                                    <td>apikey, prompt</td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-info">GET</div>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-sm-rounded btn-outline-success">ONLINE</div>
+                                    </td>
+                                    <td><a href="/ai/text2img?apikey=<%= user.apiKey %>&prompt=" class="btn btn-sm-block btn-primary" rel="nofollow" target="_blank"><i class="fas fa-arrow-up-right-from-square"></i></a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- row -->
+</div>
+</main>
+
+<footer id="footer" class="footer">
+<div class="copyright">
+&copy; Copyright <strong><span>2023-2024</span></strong> KiiCode Projects
+</div>
+</footer>
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+<i class="bi bi-arrow-up-short"></i>
+</a>
+
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/echarts/echarts.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/quill/quill.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/vendor/php-email-form/validate.js"></script>
+<script src="https://ferdiz-afk.github.io/Nice/assets/js/main.js"></script>
+
+</body>
+</html>
